@@ -1,14 +1,20 @@
 package hellojpa;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
+//JPA 관리하는 객체, DB 테이블과 매핑해서 사용
 @Entity
+//@Table(name = "MBR") //테이블명
 public class Member {
 
     @Id //pk
     private Long id;
+    @Column(unique = true, length = 10)
     private String name;
+
 
     public Member() {
 
