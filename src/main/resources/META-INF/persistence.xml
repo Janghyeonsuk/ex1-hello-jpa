@@ -20,9 +20,10 @@
             <property name="hibernate.jdbc.batch_size" value="10"/>
 
             <!-- 실행단계에서 자동으로 DDL 테이블 생성, 운영에서는 사용 x, local 개발할때만 사용 -->
-            <property name="hibernate.hbm2ddl.auto" value="create" /> <!-- 테이블을 drop 후 create -->
+            <property name="hibernate.hbm2ddl.auto" value="create" />
+            <!--<property name="hibernate.hbm2ddl.auto" value="create" /> --> <!-- 테이블을 drop 후 create -->
             <!--<property name="hibernate.hbm2ddl.auto" value="create-drop" />--> <!-- create 같지만 마지막에 drop -->
-            <!--<property name="hibernate.hbm2ddl.auto" value="update" />--> <!-- 변경부분만 alter, 삭제는 x -->
+            <!-- <property name="hibernate.hbm2ddl.auto" value="update" /> --> <!-- 변경부분만 alter, 삭제는 x -->
             <!--<property name="hibernate.hbm2ddl.auto" value="validate" />--> <!-- 엔티티와 테이블 매핑 확인 -->
             <!--<property name="hibernate.hbm2ddl.auto" value="none" />--> <!-- 사용 x -->
          </properties>

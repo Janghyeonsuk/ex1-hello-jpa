@@ -56,14 +56,7 @@ public class JpaMain {
             for (Member member : result) {
                 System.out.println("member.getName() = " + member.getName());
             }*/
-
-            Member member = em.find(Member.class, 150l);
-            member.setName("AAAAA");
-
-
-
-            System.out.println("===============");
-
+            
             tx.commit(); //정상적이면 commit, DB에 저장되는 시점
         } catch (Exception e) {
             tx.rollback(); //예외 발생시 롤백
