@@ -53,5 +53,11 @@ public class Member {
 
     public void setTeam(Team team) {
         this.team = team;
+        team.getMembers().add(this); // ** 중요 **
+        // mappedBy 이므로 등록, 변경을 위해서는 member.setTeam(team); 필요
+        // 객체의 입장에서는 양쪽에 값을 넣어주는게 맞다.
+        // 그래서 Member team 세팅하면 Team 객체 콜렉션에도 member 추가된다.
+
     }
+
 }
