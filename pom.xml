@@ -14,6 +14,12 @@
             <artifactId>hibernate-entitymanager</artifactId>
             <version>5.3.10.Final</version>
         </dependency>
+        <!-- H2 데이터베이스 -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.200</version>
+        </dependency>
 
         <dependency>
             <groupId>javax.xml.bind</groupId>
@@ -21,17 +27,9 @@
             <version>2.3.0</version>
         </dependency>
 
-        <!-- H2 데이터베이스 -->
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.4.200</version>
-        </dependency>
     </dependencies>
-
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
-
 </project>

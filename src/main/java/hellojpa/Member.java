@@ -7,18 +7,20 @@ import java.util.Date;
 
 //JPA 관리하는 객체, DB 테이블과 매핑해서 사용
 @Entity
-@SequenceGenerator(
-        name = "MEMBER_SEQ_GENERATOR",
-        sequenceName = "MEMBER_SEQ", //매핑할 데이터베이스 시퀀스 이름
-        initialValue = 1, allocationSize = 50)
 public class Member {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "MEMBER_SEQ_GENERATOR")
+    @Id @GeneratedValue
+    @Column(name = "MEMBER_ID")
     private Long id;
 
-    @Column(name = "name", nullable = false) // 컬럼 매핑, not null 제약 조건
+    @Column(name = "USERNAME") // 컬럼 매핑, nullable = false -> not null 제약 조건
     private String username;
+
+//    @Column(name = "TEAM_ID")
+//    private Long teamId;
+
+    @ManyToOne
+    @JoinColumn(name = "TEAM_ID") //주인, 값을 생성 및 수정 가능, N 쪽이 무조건 연관관계 주인
+    private Team team;
 
     public Long getId() {
         return id;
@@ -36,6 +38,20 @@ public class Member {
         this.username = username;
     }
 
-    public void Member() {
+//    public Long getTeamId() {
+//        return teamId;
+//    }
+//
+//    public void setTeamId(Long teamId) {
+//        this.teamId = teamId;
+//    }
+
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }
