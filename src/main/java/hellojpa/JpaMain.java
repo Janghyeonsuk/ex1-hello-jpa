@@ -56,7 +56,7 @@ public class JpaMain {
 
             for (Member member : result) {
                 System.out.println("member.getName() = " + member.getName());
-            }*/
+            }
 
             //팀 저장
             Team team = new Team();
@@ -89,6 +89,7 @@ public class JpaMain {
                 System.out.println("m.getUsername() = " + m.getUsername());
             }
             System.out.println("=========================");
+*/
 
             tx.commit(); //정상적이면 commit, DB에 저장되는 시점
         } catch (Exception e) {
