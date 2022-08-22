@@ -1,10 +1,8 @@
 package hellojpa;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.List;
 
 //JPA 관리하는 객체, DB 테이블과 매핑해서 사용

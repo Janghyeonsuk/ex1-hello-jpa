@@ -4,7 +4,6 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "ORDER")
 public class MemberProduct {
 
     @Id
