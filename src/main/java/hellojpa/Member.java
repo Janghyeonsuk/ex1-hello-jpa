@@ -7,7 +7,7 @@ import java.util.List;
 
 //JPA 관리하는 객체, DB 테이블과 매핑해서 사용
 @Entity
-public class Member {
+public class Member extends BaseEntity{
     @Id
     @GeneratedValue
     @Column(name = "MEMBER_ID")

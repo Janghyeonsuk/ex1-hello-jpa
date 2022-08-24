@@ -17,7 +17,7 @@
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.use_sql_comments" value="true"/>
-            <property name="hibernate.jdbc.batch_size" value="10"/>
+            <!-- <property name="hibernate.jdbc.batch_size" value="10"/> -->
 
             <!-- 실행단계에서 자동으로 DDL 테이블 생성, 운영에서는 사용 x, local 개발할때만 사용 -->
             <property name="hibernate.hbm2ddl.auto" value="create" />
