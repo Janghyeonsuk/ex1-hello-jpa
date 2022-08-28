@@ -6,6 +6,7 @@ package hellojpa;
         import javax.persistence.EntityManagerFactory;
         import javax.persistence.EntityTransaction;
         import javax.persistence.Persistence;
+        import java.util.List;
 
 public class JpaMain {
 
@@ -89,15 +90,6 @@ public class JpaMain {
             }
             System.out.println("=========================");
 
-*/
-
-            Member member1 = new Member();
-            member1.setUsername("member1");
-            em.persist(member1);
-
-            em.flush();
-            em.clear();
-
             // 프록시
             Member reference = em.getReference(Member.class, member1.getId());
             // 프록시는 실제 클래스를 상속받아서 만들어진다, 실제와 겉이 같아서 사용자는 실제인지 프록시인지 구분x
@@ -128,7 +120,56 @@ public class JpaMain {
             System.out.println("isLoaded = " + emf.getPersistenceUnitUtil().isLoaded(refMember));
 
             // 프록시 강제 초기화
+            // 프록시 객체 초기화란 프록시 객체가 실제 사용될 때 데이터베이스를 조회해서 실제 엔티티 객체를 생성하는 것
             Hibernate.initialize(refMember);
+            // member.getName(); -> 강제 호출로 초기화
+
+            Team teamA = new Team();
+            teamA.setName("teamA");
+            em.persist(teamA);
+
+            Team teamB = new Team();
+            teamB.setName("teamB");
+            em.persist(teamB);
+
+            Member member1 = new Member();
+            member1.setUsername("member1");
+            member1.setTeam(teamA);
+            em.persist(member1);
+
+            Member member2 = new Member();
+            member2.setUsername("member2");
+            member2.setTeam(teamB);
+            em.persist(member2);
+
+            em.flush();
+            em.clear();
+
+            Member m = em.getReference(Member.class, member1.getId());
+            System.out.println("m = " + m.getTeam().getClass());
+
+            System.out.println("============");
+            System.out.println("m = " + m.getTeam().getName());; // team.getName()을 할떄 프록시 초기화
+            System.out.println("============");
+
+            // fetch join -> 런타임에 동적으로 원하는 엔티티를 선택해서 한번에 가져옴
+            List<Member> members = em.createQuery("select  m from Member m join fetch m.team", Member.class)
+                    .getResultList();
+*/
+            Child child1 = new Child();
+            Child child2 = new Child();
+
+            Parent parent = new Parent();
+            parent.addChild(child1);
+            parent.addChild(child2);
+
+            em.persist(parent);
+
+            em.flush();
+            em.clear();
+
+            Parent findParent = em.find(Parent.class, parent.getId());
+            em.remove(findParent); // 부모 삭제 -> 자식 삭제
 
             tx.commit(); //정상적이면 commit, DB에 저장되는 시점
         } catch (Exception e) {

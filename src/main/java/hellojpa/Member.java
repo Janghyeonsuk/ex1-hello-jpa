@@ -13,10 +13,7 @@ public class Member extends BaseEntity{
     @Column(name = "USERNAME") // 컬럼 매핑, nullable = false -> not null 제약 조건
     private String username;
 
-//    @Column(name = "TEAM_ID")
-//    private Long teamId;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY) // (지연로딩 LAZY)프록시 객체로 조회 -> 멤버 클래스만 DB 조회, (즉시로딩 EAGER) 실제 객체를 한번에 다 가져옴
     @JoinColumn(name = "TEAM_ID") //주인, 값을 생성 및 수정 가능, N 쪽이 무조건 연관관계 주인
     private Team team;
 
@@ -36,14 +33,6 @@ public class Member extends BaseEntity{
         this.username = username;
     }
 
-//    public Long getTeamId() {
-//        return teamId;
-//    }
-//
-//    public void setTeamId(Long teamId) {
-//        this.teamId = teamId;
-//    }
-
     public Team getTeam() {
         return team;
     }
@@ -55,7 +44,5 @@ public class Member extends BaseEntity{
         // 객체의 입장에서는 양쪽에 값을 넣어주는게 맞다.
         // 그래서 Member team 세팅하면 Team 객체 콜렉션에도 member 추가된다.
     }
-
-
 
 }
