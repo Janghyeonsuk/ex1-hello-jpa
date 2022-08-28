@@ -7,6 +7,7 @@ package hellojpa;
         import javax.persistence.EntityTransaction;
         import javax.persistence.Persistence;
         import java.util.List;
+        import java.util.Set;
 
 public class JpaMain {
 
@@ -155,7 +156,7 @@ public class JpaMain {
             // fetch join -> 런타임에 동적으로 원하는 엔티티를 선택해서 한번에 가져옴
             List<Member> members = em.createQuery("select  m from Member m join fetch m.team", Member.class)
                     .getResultList();
-*/
+
             Child child1 = new Child();
             Child child2 = new Child();
 
@@ -170,6 +171,85 @@ public class JpaMain {
 
             Parent findParent = em.find(Parent.class, parent.getId());
             em.remove(findParent); // 부모 삭제 -> 자식 삭제
+
+            Address address = new Address("city", "street", "10000");
+
+            Member member1 = new Member();
+            member1.setUsername("member1");
+            member1.setHomeAddress(address);
+            em.persist(member1);
+
+            //값 복사
+            Address copyAddress = new Address(address.getCity(), address.getStreet(), address.getZipcode());
+
+            Member member2 = new Member();
+            member2.setUsername("member2");
+            member2.setHomeAddress(copyAddress);
+            em.persist(member2);
+
+            // 임베디드 타입 같은 값 타입을 여러 엔티티에서 공유하면 위험함 -> 값을 복사해서 사용
+            member1.getHomeAddress().setCity("newCity"); // member1의 city만 바꾸려했는데 member2의 city도 변경
+
+            Member member = new Member();
+            member.setUsername("member1");
+            member.setHomeAddress(new Address("homeCity", "street", "10000"));
+
+            member.getFavoriteFoods().add("치킨");
+            member.getFavoriteFoods().add("피자");
+            member.getFavoriteFoods().add("족발");
+
+            member.getAddressHistory().add(new Address("old1", "street", "10000"));
+            member.getAddressHistory().add(new Address("old2", "street", "10000"));
+
+            // 일대다로 테이블로 매핑
+            member.getAddressHistory().add(new AddressEntity("old1", "street", "10000"));
+            member.getAddressHistory().add(new AddressEntity("old2", "street", "10000"));
+
+            em.persist(member);
+
+            em.flush();
+            em.clear();
+
+            System.out.println("========START========");
+            Member findMember = em.find(Member.class, member.getId());
+
+            // 값 조회
+            List<Address> addressHistory = findMember.getAddressHistory();
+            for (Address address : addressHistory) {
+                System.out.println("address.getCity() = " + address.getCity());
+            }
+
+            Set<String> favoriteFoods = findMember.getFavoriteFoods();
+            for (String favoriteFood : favoriteFoods) {
+                System.out.println("favoriteFood = " + favoriteFood);
+            }
+
+            // homeCity -> newCity 값 타입 수정 -> 통으로 교체
+//            findMember.getHomeAddress().setCity("newCity");
+            Address a = findMember.getHomeAddress();
+            findMember.setHomeAddress(new Address("newCity",a.getStreet(), a.getZipcode()));
+
+            // 치킨 -> 한식 / String 갈아 끼우는게 아닌 삭제후 추가
+            findMember.getFavoriteFoods().remove("치킨");
+            findMember.getFavoriteFoods().add("한식");
+
+            // 값 타입 컬렉션에 변경 발생 -> 주인 엔티티와 연관된 모든 데이터 삭제 -> 현재 값을 모두 다시저장
+            findMember.getAddressHistory().remove(new Address("old1", "street", "10000"));
+            findMember.getAddressHistory().add(new Address("newCity1", "street", "10000"));
+*/
+
+            Member member = new Member();
+            member.setUsername("member1");
+            member.setHomeAddress(new Address("homeCity", "street", "10000"));
+
+            member.getFavoriteFoods().add("치킨");
+            member.getFavoriteFoods().add("피자");
+            member.getFavoriteFoods().add("족발");
+
+            member.getAddressHistory().add(new AddressEntity("old1", "street", "10000"));
+            member.getAddressHistory().add(new AddressEntity("old2", "street", "10000"));
+
+            em.persist(member);
 
             tx.commit(); //정상적이면 commit, DB에 저장되는 시점
         } catch (Exception e) {
